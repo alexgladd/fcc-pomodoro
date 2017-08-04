@@ -1,0 +1,34 @@
+/* Pomodoro timer CSS
+ *
+ *
+ */
+
+body {
+  background-color: #605856;
+  color: #FBFCFF;
+  font-family: 'Permanent Marker', cursive;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+#pomodoro {
+  background-color: #DB5461;
+  width: 100%;
+  padding-top: 75%;
+  position: relative;
+  border: 10px solid #C84D59;
+  border-radius: 50%
+}
+
+#pomodoro-clock {
+  position: absolute;
+  top: 50%;
+  height: 1.5em;
+  right: 0;
+  left: 0;
+  text-align: center;
+  margin-top: -0.75em;
+  font-size: 6em;
+}
