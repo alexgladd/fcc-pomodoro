@@ -63,6 +63,7 @@ h1 {
 
 .setting-btn {
   color: #FA7921;
+  cursor: pointer;
 }
 
 .setting-label {

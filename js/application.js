@@ -27,10 +27,14 @@ appState.timerSettings[Modes.BREAK] = {
 
 var formatter = new Intl.NumberFormat("en-US", {minimumIntegerDigits: 2});
 
+var beep = new Audio("sfx/microbeep.mp3");
+
 // jQuery start -------------------------------------------
 
 $(document).ready(function() {
+  // init
   onReset();
+  updateSettings();
 
   // controls setup
   $("#btn-pomodoro").on("click", onPomodoro);
@@ -38,7 +42,10 @@ $(document).ready(function() {
   $("#btn-reset").on("click", onReset);
 
   // settings setup
-  // TODO
+  $("#pomodoro-plus").on("click", onPomodoroPlus);
+  $("#pomodoro-minus").on("click", onPomodoroMinus);
+  $("#break-plus").on("click", onBreakPlus);
+  $("#break-minus").on("click", onBreakMinus);
 });
 
 // events -------------------------------------------------
@@ -86,6 +93,30 @@ function onBreak() {
   }
 }
 
+function onPomodoroPlus() {
+  appState.timerSettings[Modes.POMODORO].durationMin += 1;
+  updateSettings();
+}
+
+function onPomodoroMinus() {
+  if (appState.timerSettings[Modes.POMODORO].durationMin >= 2) {
+    appState.timerSettings[Modes.POMODORO].durationMin -= 1;
+    updateSettings();
+  }
+}
+
+function onBreakPlus() {
+  appState.timerSettings[Modes.BREAK].durationMin += 1;
+  updateSettings();
+}
+
+function onBreakMinus() {
+  if (appState.timerSettings[Modes.BREAK].durationMin >= 2) {
+    appState.timerSettings[Modes.BREAK].durationMin -= 1;
+    updateSettings();
+  }
+}
+
 // timers -------------------------------------------------
 
 function startTimer() {
@@ -112,11 +143,13 @@ function isTimerRunning() {
 }
 
 function timerTick() {
+  appState.timer.remainingSeconds = appState.timer.remainingSeconds - 1;
+  updateClockDisplay(appState.timer.remainingSeconds);
+
   if (appState.timer.remainingSeconds === 0) {
     // done!
-  } else {
-    appState.timer.remainingSeconds = appState.timer.remainingSeconds - 1;
-    updateClockDisplay(appState.timer.remainingSeconds);
+    beep.play();
+    stopTimer();
   }
 }
 
@@ -139,4 +172,9 @@ function updateButtonStates() {
   } else if (appState.mode === Modes.BREAK) {
     $("#btn-break").addClass("pomodoro-btn-active");
   }
+}
+
+function updateSettings() {
+  $("#pomodoro-duration").html(appState.timerSettings[Modes.POMODORO].durationMin);
+  $("#break-duration").html(appState.timerSettings[Modes.BREAK].durationMin);
 }
